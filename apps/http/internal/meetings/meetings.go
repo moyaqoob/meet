@@ -16,11 +16,17 @@ func generateId() string {
 	str := uuid.New().String()
 	return str[:10]
 }
+ 
+type Server struct {
+	db *gorm.DB
+}
 
-func Handler(handle *mux.Router) {
-	handle.HandleFunc("/create", createMeet).Methods("POST")
-	handle.HandleFunc("/join", joinMeet).Methods("POST")
-	handle.HandleFunc("/leave", leaveMeet).Methods("POST")
+func Handler(handle *mux.Router, gormDB *gorm.DB) {
+	var s *Server
+	db :=s.db
+	handle.HandleFunc("/create", createMeet(db)).Methods("POST")
+	handle.HandleFunc("/join", joinMeet(db)).Methods("POST")
+	handle.HandleFunc("/leave", leaveMeet(db)).Methods("POST")
 }
 
 func createMeet(db *gorm.DB) http.HandlerFunc {
@@ -55,10 +61,15 @@ func createMeet(db *gorm.DB) http.HandlerFunc {
 
 }
 
-func joinMeet(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("this is join room from rooms.go "))
-}
+func joinMeet(db *gorm.DB) http.HandlerFunc  {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("this is join room from rooms.go "))
+	}
 
-func leaveMeet(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("this is leave room from rooms.go "))
+}
+func leaveMeet(db *gorm.DB) http.HandlerFunc  {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("this is join room from rooms.go "))
+	}
+
 }

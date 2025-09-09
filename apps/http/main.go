@@ -11,7 +11,7 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-
+   
 	// Mount /auth routes
 	authRouter := r.PathPrefix("/auth").Subrouter()
 	auth.Handler(authRouter)
